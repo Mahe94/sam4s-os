@@ -130,9 +130,6 @@
 // From module: Standard serial I/O (stdio) - SAM implementation
 #include <stdio_serial.h>
 
-//string function
-#include <string.h>
-
 // From module: Supported ports of FatFS
 #include <diskio.h>
 
@@ -151,10 +148,14 @@
 // From module: pio_handler support enabled
 #include <pio_handler.h>
 
-//user defined display
 #include <display.h>
 
-//user defined sd_card function
+#include <touch.h>
+
 #include <sd_fn.h>
+
+#include <string.h>
+
+#include <image_viewer.h>
 
 #endif // ASF_H

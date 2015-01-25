@@ -16,10 +16,18 @@ void show_files(const TCHAR *path) {
 	
 	FILINFO f;
 	memset(&f,0,sizeof(f));
-	 uint8_t counter = 0;
+	
+	uint8_t position = 0;
+	
 	while((res = f_readdir(&dj, &f)) == FR_OK) {	
-		++counter;
-		add_list((const uint8_t *)f.fname, 1);
+		if(!add_list((const uint8_t *)f.fname, 1))
+			break;
+		position = (current_y-LIST_HEIGHT)/LIST_HEIGHT;
+		strcpy(tfunction[position], f.fname);
 		memset(&f,0,sizeof(f));
+		++position;
 	}
+	
+//	if(res == FR_OK)
+		next_arrow();
 }

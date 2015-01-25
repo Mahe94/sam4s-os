@@ -140,6 +140,7 @@ uint32_t rtouch_calibrate(void)
 		rtouch_wait_released();
 	}
 	
+
 	if (rtouch_compute_calibration((rtouch_calibration_point_t *) &gs_calibration_points) == 0) {
 		lcd_fill(UNI_COLOR_WHITE);
 		lcd_set_foreground_color(UNI_COLOR_BLACK);

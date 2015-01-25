@@ -249,6 +249,8 @@ int main(void)
 	rtouch_init(LCD_WIDTH, LCD_HEIGHT);
 	rtouch_enable();
 	rtouch_set_event_handler(event_handler);
+	
+	touch_init();
 /**	
 	while (1) {
 		uc_result = rtouch_calibrate();
@@ -259,7 +261,7 @@ int main(void)
 			puts("Calibration failed; error delta is too big ! Please retry calibration procedure...\r");
 		}
 	}
-**/	
+**/
 	ili93xx_set_foreground_color(COLOR_WHITE);
 	ili93xx_draw_filled_rectangle(0, 0, ILI93XX_LCD_WIDTH,
 	ILI93XX_LCD_HEIGHT);
@@ -273,7 +275,6 @@ int main(void)
 //		ili93xx_set_foreground_color(COLOR_WHITE);
 //		printf("Please plug an SD, MMC or SDIO card in slot.\n\r");
 		add_list((const uint8_t *)"CHECKING SD CARD", 0);
-		delay_ms(800);
 		
 		status = sd_mmc_test_unit_ready(0);
 		if (CTRL_FAIL == status) {
@@ -344,6 +345,18 @@ int main(void)
 		add_list((const uint8_t *)path, 0);
 		
 		show_files(path);
+		
+		TCHAR *touched;
+		memset(touched,0,100);
+		
+		touched = find_touch();
+//		f_chdir(touched);
+		res = f_getcwd(path, 100);
+//		show_files(path);
+	
+		TCHAR *file_path = strcat(path,touched);
+		show_image(file_path);
+			
 //		f_chdir((const TCHAR *)"NEW");
 //		f_getcwd(path, 100);
 //		f_mkdir((const TCHAR *)"Hello");

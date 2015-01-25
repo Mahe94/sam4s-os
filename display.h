@@ -18,6 +18,8 @@
 uint32_t current_x;
 uint32_t current_y;
 
-void add_list(const uint8_t *p, uint8_t priority);
+void next_arrow(void);
+uint8_t check_space(void);
+uint8_t add_list(const uint8_t *p, uint8_t priority);
 
 #endif /* DISPLAY_H_ */
