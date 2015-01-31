@@ -55,3 +55,7 @@ TCHAR* find_touch(void) {
 
 	return tfunction[val];
 }
+
+void execute(const TCHAR* path) {
+	
+}

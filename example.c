@@ -350,6 +350,7 @@ int main(void)
 		memset(touched,0,100);
 		
 		touched = find_touch();
+//		execute(touched);
 //		f_chdir(touched);
 		res = f_getcwd(path, 100);
 //		show_files(path);

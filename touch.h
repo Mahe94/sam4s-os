@@ -15,6 +15,7 @@ char tfunction[10][100];
 
 void touch_init(void);
 TCHAR* find_touch(void);
+void execute(const TCHAR* path);
 
 
 #endif /* TOUCH_H_ */
