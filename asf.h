@@ -56,6 +56,9 @@
 #include <compiler.h>
 #include <status_codes.h>
 
+// From module: DACC - Digital-to-Analog Converter
+#include <dacc.h>
+
 // From module: Delay routines
 #include <delay.h>
 
@@ -150,12 +153,15 @@
 
 #include <display.h>
 
-#include <touch.h>
+#include <image_viewer.h>
+
+#include <rtouch_calibrate.h>
 
 #include <sd_fn.h>
 
-#include <string.h>
+#include <sd_mmc_mem.h>
 
-#include <image_viewer.h>
+#include <touch.h>
+
 
 #endif // ASF_H

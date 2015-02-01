@@ -1473,11 +1473,15 @@ void ili93xx_draw_string(uint32_t ul_x, uint32_t ul_y, const uint8_t *p_str)
 	uint32_t xorg = ul_x;
 
 	while (*p_str != 0) {
-		/** If newline, jump to the next line (font height + 2) */
-		if (*p_str == '\n') {
+		/** If newline, jump to the next line (font height + 2) or line is full*/
+		if (*p_str == '\n' || ul_x + gfont.width > ILI93XX_LCD_WIDTH) {
 			ul_y += gfont.height + 2;
 			ul_x = xorg;
-		} else {
+		} //else if (ul_y >= )
+		//	{
+		//	}
+			else{
+			
 			/**
 			 * Draw the character and place cursor right after (font
 			 * width + 2)
