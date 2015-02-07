@@ -26,12 +26,17 @@ void next_arrow() {
 	ili93xx_draw_string(ILI93XX_LCD_WIDTH - (4*PADDING), current_y + PADDING, (const uint8_t *)">>>");
 }
 
-uint8_t add_list(const uint8_t *p, uint8_t priority) {
+/** adds a list in the screen with the priority, and the name is stored in tname and its function in tfunction.**/
+uint8_t add_list(char *p, uint8_t priority, uint8_t fn) {
 	if(!check_space())
 		return 0;
 	ili93xx_set_foreground_color(LIST_COLOR);
-	ili93xx_draw_string(current_x + (1 +priority)*PADDING, current_y + PADDING, p);
+	ili93xx_draw_string(current_x + (1 +priority)*PADDING, current_y + PADDING, (const uint8_t *)p);
 	ili93xx_draw_line(current_x + PADDING, current_y + LIST_HEIGHT, current_x + LIST_WIDTH , current_y + LIST_HEIGHT );
+	position = current_y/LIST_HEIGHT;
+	strcpy(tname[position], p);
+	tfunction[position] = fn;
+	++position;
 	current_y += LIST_HEIGHT;
 	return 1;
 }

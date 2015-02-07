@@ -11,11 +11,18 @@
 
 #define  MULTI_FACTOR      1024
 
-char tfunction[10][100];
+struct touch {
+	char tname[100];
+	uint8_t tfunction;
+}T;
+
+char tname[10][100];
+uint8_t tfunction[10];
+uint8_t position;
 
 void touch_init(void);
 TCHAR* find_touch(void);
-void execute(const TCHAR* path);
+
 
 
 #endif /* TOUCH_H_ */

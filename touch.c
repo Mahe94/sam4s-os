@@ -19,8 +19,10 @@ uint32_t g_ul_height = ILI93XX_LCD_HEIGHT;
 
 void touch_init() {
 	uint8_t i;
-	for(i=0; i<10; ++i)
-		memset(tfunction[i],0,100);
+	for(i=0; i<10; ++i) {
+		memset(tname[i],0,100);
+		memset(tfunction[i],0,sizeof(tfunction[i]));	
+	}
 }
 /**
 void get_point(rtouch_point_t *p_raw, rtouch_point_t *p_point) {
@@ -39,7 +41,7 @@ void get_point(rtouch_point_t *p_raw, rtouch_point_t *p_point) {
 	p_point->y = (p_point->y > g_ul_height) ? g_ul_height : p_point->y;
 }
 **/
-TCHAR* find_touch(void) {
+struct touch* find_touch(void) {
 	uint32_t x, y, val, X, Y;
 	
 	rtouch_wait_pressed();
@@ -52,10 +54,7 @@ TCHAR* find_touch(void) {
 	
 //	get_point(&raw, &actual);
 	val = 9-(raw.y-150)/180;
-
-	return tfunction[val];
-}
-
-void execute(const TCHAR* path) {
-	
+	 T.tfunction = tfunction[val];
+	 strcpy(T.tname ,tname[val]);
+	 return &T;
 }

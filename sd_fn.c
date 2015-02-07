@@ -8,24 +8,32 @@
 #include <asf.h>
 #include "sd_fn.h"
 
-void show_files(const TCHAR *path) {
+void show_files(const TCHAR *path, const TCHAR *ext) {
 	DIR dj;
 	memset(&dj,0,sizeof(dj));
 	
 	res = f_opendir(&dj, path);
 	
 	FILINFO f;
+	TCHAR *fname;
 	memset(&f,0,sizeof(f));
 	
-	uint8_t position = 0;
+	uint8_t position = 0, attrib = 1;
 	
-	while((res = f_readdir(&dj, &f)) == FR_OK) {	
-		if(!add_list((const uint8_t *)f.fname, 1))
+	while((res = f_readdir(&dj, &f)) == FR_OK) {
+		if(f.fattrib==AM_DIR)
+			attrib = 10;
+		fname = f.fname;
+		while(*fname=='.') ++fname;
+		if(strcmp(fname, ext))
+			continue;
+		if(!add_list(f.fname, 1, attrib))
 			break;
-		position = (current_y-LIST_HEIGHT)/LIST_HEIGHT;
-		strcpy(tfunction[position], f.fname);
+//		position = (current_y-LIST_HEIGHT)/LIST_HEIGHT;
+//		strcpy(tfunction[position], f.fname);
 		memset(&f,0,sizeof(f));
-		++position;
+		attrib = 1;
+//		++position;
 	}
 	
 //	if(res == FR_OK)

@@ -262,9 +262,9 @@ int main(void)
 		}
 	}
 **/
-	ili93xx_set_foreground_color(COLOR_WHITE);
-	ili93xx_draw_filled_rectangle(0, 0, ILI93XX_LCD_WIDTH,
-	ILI93XX_LCD_HEIGHT);
+//	ili93xx_set_foreground_color(COLOR_WHITE);
+//	ili93xx_draw_filled_rectangle(0, 0, ILI93XX_LCD_WIDTH,
+//	ILI93XX_LCD_HEIGHT);
 
 //	add_list((const uint8_t *)"HELLO", 1);
 //	add_list((const uint8_t *)"How are you?",2);
@@ -272,104 +272,49 @@ int main(void)
 //	printf("\x0C\n\r-- SD/MMC/SDIO Card Example on FatFs --\n\r");
 //	printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
 	while (1) {
-//		ili93xx_set_foreground_color(COLOR_WHITE);
-//		printf("Please plug an SD, MMC or SDIO card in slot.\n\r");
-		add_list((const uint8_t *)"CHECKING SD CARD", 0);
-		
-		status = sd_mmc_test_unit_ready(0);
-		if (CTRL_FAIL == status) {
-//			printf("Card install FAIL\n\r");
-//			printf("Please unplug and re-plug the card.\n\r");
-			add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0);
-			goto main_end_of_test;
-		}
-		
+		clear_screen();
+		position = 0;
+		add_list("MY-OS", 4, 0);
+		add_list("GALLERY", 0, 1);
+		add_list("MUSIC", 0, 2);	
 
-//		printf("Mount disk (f_mount)...\r\n");
-		memset(&fs, 0, sizeof(FATFS));
-		res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
-		if (FR_INVALID_DRIVE == res) {
-//			printf("[FAIL] res %d\r\n", res);
-			add_list((const uint8_t *) "SD CARD CORRUPTED", 0); 
-			goto main_end_of_test;
-		}
-//		printf("[OK]\r\n");
+		uint8_t touched = find_touch();
+		swtich(touched) {
+			case 1:
+					add_list("GALLERY", 0, 0);
+		
+					status = sd_mmc_test_unit_ready(0);
+					if (CTRL_FAIL == status) {
+						add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0);
+						goto main_end_of_test;
+					}
+					
+					memset(&fs, 0, sizeof(FATFS));
+					res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
+					if (FR_INVALID_DRIVE == res) {
+						add_list((const uint8_t *) "SD CARD CORRUPTED", 0); 
+						goto main_end_of_test;
+					}
+					
+					TCHAR path[100];
+					memset(path,0,100);
+		
+					res = f_getcwd(path, 100);
+		
+					show_files(path, "img");
+		
+					struct touch touched;
+					memset(touched,0,sizeof(touched));
+		
+					touched = find_touch();
+					res = f_getcwd(path, 100);
+					TCHAR *file_path = strcat(path,touched.tname);
+					show_image(file_path);
 
-/**		printf("Create a file (f_open)...\r\n");
-		test_file_name[0] = LUN_ID_SD_MMC_0_MEM + '0';
-		res = f_open(&file_object,
-				(char const *)test_file_name, FA_READ);
-//				FA_CREATE_ALWAYS | FA_WRITE);
-		if (res != FR_OK) {
-//			printf("[FAIL] res %d\r\n", res);
-			goto main_end_of_test;
-		}
-//		printf("[OK]\r\n");
+			main_end_of_test:
+					while (CTRL_NO_PRESENT != sd_mmc_check(0)) {
 		
-		char pixel[9], *ptr;
-		uint32_t hex;
-		
-		ili93xx_display_off();
-		
-		gpio_set_pin_low(LED0_GPIO);
-		for(int y=2; y<=320+1; ++y) {
-			for(int x=2; x<=240+1; ++x) {
-				if(0 == f_gets(pixel, 9, &file_object))
-					break;
-				hex = strtoul(pixel, &ptr, 16);
-				ili93xx_set_foreground_color(hex);
-				ili93xx_draw_pixel(x, y);				
-			}
-		}
-		gpio_set_pin_high(LED0_GPIO);
-		
-		ili93xx_display_on();
-/**
-		printf("Write to test file (f_puts)...\r\n");
-		if (0 == f_puts("Test SD/MMC stack\n", &file_object)) {
-			f_close(&file_object);
-			printf("[FAIL]\r\n");
-			goto main_end_of_test;
-		}
-		printf("[OK]\r\n");
-**/		
-//		f_mkdir((const TCHAR *)"New");
-//		f_mkdir((const TCHAR *)"New/new");
-		
-		TCHAR path[100];
-		memset(path,0,100);
-//		f_unlink((const TCHAR *)"New/new");
-		
-		res = f_getcwd(path, 100);
-//		ili93xx_draw_string(5, 20, (const uint8_t *)"First");
-		add_list((const uint8_t *)path, 0);
-		
-		show_files(path);
-		
-		TCHAR *touched;
-		memset(touched,0,100);
-		
-		touched = find_touch();
-//		execute(touched);
-//		f_chdir(touched);
-		res = f_getcwd(path, 100);
-//		show_files(path);
-	
-		TCHAR *file_path = strcat(path,touched);
-		show_image(file_path);
 			
-//		f_chdir((const TCHAR *)"NEW");
-//		f_getcwd(path, 100);
-//		f_mkdir((const TCHAR *)"Hello");
-//		ili93xx_draw_string(5, 57, (const uint8_t *)path);
-//		ili93xx_draw_string(5, 147, (const uint8_t *)"HELLO");
-		
-//		f_close(&file_object);
-//		printf("Test is successful.\n\r");
-
-main_end_of_test:
-//		printf("Please unplug the card.\n\r");
-		while (CTRL_NO_PRESENT != sd_mmc_check(0)) {
 		}
 	}
 }
