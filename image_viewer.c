@@ -6,6 +6,7 @@
  */ 
 
 #include <asf.h>
+#include "display.h"
 
 void show_image(const TCHAR *path) {
 //				char test_file_name[] = "0:sd_mmc_test.txt";
@@ -24,7 +25,7 @@ void show_image(const TCHAR *path) {
 				uint32_t hex;
 				
 				ili93xx_display_off();
-				
+				clear_screen();
 				gpio_set_pin_low(LED0_GPIO);
 				for(int y=2; y<=320+1; ++y) {
 					for(int x=2; x<=240+1; ++x) {
@@ -37,4 +38,5 @@ void show_image(const TCHAR *path) {
 				}
 				gpio_set_pin_high(LED0_GPIO);
 				ili93xx_display_on();
+				
 }

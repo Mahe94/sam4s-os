@@ -280,6 +280,7 @@ int main(void)
 	memset(path,0,100);
 	
 	while (1) {
+		main_screen:
 		clear_screen();
 		position = 0;
 		add_list("MY-OS", 4, 0);
@@ -305,20 +306,36 @@ int main(void)
 						f_chdir(path);
 						goto explorer;
 					}
+					if(!T.tfunction) 
+						goto main_screen;
 					break;
 			case 2:
+					gallery:
 					clear_screen();
 					add_list("GALLERY", 0, 0);
 	
 					res = f_getcwd(path, 100);
 		
 					show_files(path, "img");
-/**	
+
 					find_touch();
-					res = f_getcwd(path, 100);
-					TCHAR *file_path = strcat(path,touched.tname);
-					show_image(file_path);
-				**/	
+					if(T.tfunction == 10) {
+						strcat(path, "/");
+						strcat(path, T.tname);
+						f_chdir(path);
+						goto gallery;
+					}
+					else if(T.tfunction == 1) {
+						TCHAR file_path[100];
+						strcpy(file_path, path);
+						strcat(file_path, "/");
+						strcat(file_path, T.tname);
+						show_image(file_path);
+						find_touch();
+						goto gallery;
+					}
+					if(!T.tfunction)
+						goto main_screen;
 					break;
 				default:
 					break;

@@ -8,6 +8,7 @@
 #include <asf.h>
 #include "sd_fn.h"
 #include <string.h>
+#include <ctype.h>
 
 void show_files(const TCHAR *path, const TCHAR *ext) {
 	DIR dj;
@@ -16,7 +17,7 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 	res = f_opendir(&dj, path);
 	
 	FILINFO f;
-	TCHAR *fname;
+	TCHAR *fname, *l_fname;
 	memset(&f,0,sizeof(f));
 	
 	uint8_t position = 0, attrib = 1;
@@ -28,6 +29,11 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 			fname = f.fname;
 			while(*fname != '.') ++fname;
 			++fname;
+			l_fname = fname;
+			while(*l_fname != '\0') {
+				*l_fname = tolower(*l_fname);
+				++l_fname;
+			}
 			if(strcmp(fname, ext) && strcmp(ext, ""))
 				continue;
 		}		
