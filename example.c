@@ -262,44 +262,54 @@ int main(void)
 		}
 	}
 **/
-//	ili93xx_set_foreground_color(COLOR_WHITE);
-//	ili93xx_draw_filled_rectangle(0, 0, ILI93XX_LCD_WIDTH,
-//	ILI93XX_LCD_HEIGHT);
 
-//	add_list((const uint8_t *)"HELLO", 1);
-//	add_list((const uint8_t *)"How are you?",2);
-//	while(1) {}
-//	printf("\x0C\n\r-- SD/MMC/SDIO Card Example on FatFs --\n\r");
-//	printf("-- Compiled: %s %s --\n\r", __DATE__, __TIME__);
+	status = sd_mmc_test_unit_ready(0);
+	if (CTRL_FAIL == status) {
+		add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0, 0);
+		goto main_end_of_test;
+	}
+	
+	memset(&fs, 0, sizeof(FATFS));
+	res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
+	if (FR_INVALID_DRIVE == res) {
+		add_list((const uint8_t *) "SD CARD CORRUPTED", 0, 0);
+		goto main_end_of_test;
+	}
+	
+	TCHAR path[100];
+	memset(path,0,100);
+	
 	while (1) {
 		clear_screen();
 		position = 0;
 		add_list("MY-OS", 4, 0);
-		add_list("GALLERY", 0, 1);
-		add_list("MUSIC", 0, 2);	
+		add_list("FILE EXPLORER", 0, 1);
+		add_list("GALLERY", 0, 2);
+		add_list("MUSIC", 0, 3);	
 
 		find_touch();
 		switch(T.tfunction) {
 			case 1:
+					explorer:
+					clear_screen();
+					add_list("FILE EXPLORER", 0, 0);
+					
+					res = f_getcwd(path, 100);
+					
+					show_files(path, "");
+					find_touch();
+					
+					if(T.tfunction == 10) {
+						strcat(path, "/");
+						strcat(path, T.tname);
+						f_chdir(path);
+						goto explorer;
+					}
+					break;
+			case 2:
 					clear_screen();
 					add_list("GALLERY", 0, 0);
-		
-					status = sd_mmc_test_unit_ready(0);
-					if (CTRL_FAIL == status) {
-						add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0, 0);
-						goto main_end_of_test;
-					}
-					
-					memset(&fs, 0, sizeof(FATFS));
-					res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
-					if (FR_INVALID_DRIVE == res) {
-						add_list((const uint8_t *) "SD CARD CORRUPTED", 0, 0); 
-						goto main_end_of_test;
-					}
-					
-					TCHAR path[100];
-					memset(path,0,100);
-		
+	
 					res = f_getcwd(path, 100);
 		
 					show_files(path, "img");
@@ -309,6 +319,9 @@ int main(void)
 					TCHAR *file_path = strcat(path,touched.tname);
 					show_image(file_path);
 				**/	
+					break;
+				default:
+					break;
 		}	
 
 		while(1) {

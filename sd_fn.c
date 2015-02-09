@@ -28,7 +28,7 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 			fname = f.fname;
 			while(*fname != '.') ++fname;
 			++fname;
-			if(strcmp(fname, ext))
+			if(strcmp(fname, ext) && strcmp(ext, ""))
 				continue;
 		}		
 		if(!add_list(f.fname, 1, attrib))
