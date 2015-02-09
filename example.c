@@ -277,22 +277,23 @@ int main(void)
 		add_list("MY-OS", 4, 0);
 		add_list("GALLERY", 0, 1);
 		add_list("MUSIC", 0, 2);	
-/**
-		uint8_t touched = find_touch();
-		swtich(touched) {
+
+		find_touch();
+		switch(T.tfunction) {
 			case 1:
+					clear_screen();
 					add_list("GALLERY", 0, 0);
 		
 					status = sd_mmc_test_unit_ready(0);
 					if (CTRL_FAIL == status) {
-						add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0);
+						add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0, 0);
 						goto main_end_of_test;
 					}
 					
 					memset(&fs, 0, sizeof(FATFS));
 					res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
 					if (FR_INVALID_DRIVE == res) {
-						add_list((const uint8_t *) "SD CARD CORRUPTED", 0); 
+						add_list((const uint8_t *) "SD CARD CORRUPTED", 0, 0); 
 						goto main_end_of_test;
 					}
 					
@@ -302,23 +303,21 @@ int main(void)
 					res = f_getcwd(path, 100);
 		
 					show_files(path, "img");
-		
-					struct touch touched;
-					memset(touched,0,sizeof(touched));
-		
-					touched = find_touch();
+/**	
+					find_touch();
 					res = f_getcwd(path, 100);
 					TCHAR *file_path = strcat(path,touched.tname);
 					show_image(file_path);
-
-			main_end_of_test:
-					while (CTRL_NO_PRESENT != sd_mmc_check(0)) {
-		
-			
-		}	**/
+				**/	
+		}	
 
 		while(1) {
 			find_touch();}
 	}
+	
+	main_end_of_test:
+		while (CTRL_NO_PRESENT != sd_mmc_check(0)) {
+			find_touch();
+		}
 	
 }

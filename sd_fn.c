@@ -24,11 +24,13 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 	while((res = f_readdir(&dj, &f)) == FR_OK) {
 		if(f.fattrib==AM_DIR)
 			attrib = 10;
-		fname = f.fname;
-		while(*fname!='.') ++fname;
-		++fname;
-		if(strcmp(fname, ext))
-			continue;
+		if(attrib != 10) {
+			fname = f.fname;
+			while(*fname != '.') ++fname;
+			++fname;
+			if(strcmp(fname, ext))
+				continue;
+		}		
 		if(!add_list(f.fname, 1, attrib))
 			break;
 //		position = (current_y-LIST_HEIGHT)/LIST_HEIGHT;

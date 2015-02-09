@@ -12,6 +12,7 @@
 #include <string.h>
 
 void clear_screen(void) {
+	current_y = 0;
 	ili93xx_set_foreground_color(COLOR_WHITE);
 	ili93xx_draw_filled_rectangle(0, 0, ILI93XX_LCD_WIDTH, ILI93XX_LCD_HEIGHT);
 }
