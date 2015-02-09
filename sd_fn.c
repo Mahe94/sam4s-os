@@ -7,6 +7,7 @@
 
 #include <asf.h>
 #include "sd_fn.h"
+#include <string.h>
 
 void show_files(const TCHAR *path, const TCHAR *ext) {
 	DIR dj;
@@ -24,7 +25,8 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 		if(f.fattrib==AM_DIR)
 			attrib = 10;
 		fname = f.fname;
-		while(*fname=='.') ++fname;
+		while(*fname!='.') ++fname;
+		++fname;
 		if(strcmp(fname, ext))
 			continue;
 		if(!add_list(f.fname, 1, attrib))

@@ -11,7 +11,7 @@
 
 FRESULT res;
 
-void show_files(const TCHAR* path);
+void show_files(const TCHAR* path, const TCHAR* ext);
 
 
 

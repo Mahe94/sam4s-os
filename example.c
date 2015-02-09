@@ -159,7 +159,7 @@ int main(void)
 	
 	char test_file_name[] = "0:sd_mmc_test.txt";
 	Ctrl_status status;
-	FRESULT res;
+//	FRESULT res;
 	FATFS fs;
 	FIL file_object;
 /**
@@ -277,7 +277,7 @@ int main(void)
 		add_list("MY-OS", 4, 0);
 		add_list("GALLERY", 0, 1);
 		add_list("MUSIC", 0, 2);	
-
+/**
 		uint8_t touched = find_touch();
 		swtich(touched) {
 			case 1:
@@ -315,6 +315,10 @@ int main(void)
 					while (CTRL_NO_PRESENT != sd_mmc_check(0)) {
 		
 			
-		}
+		}	**/
+
+		while(1) {
+			find_touch();}
 	}
+	
 }

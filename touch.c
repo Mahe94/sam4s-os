@@ -6,6 +6,7 @@
  */ 
 
 #include <asf.h>
+#include <string.h>
 #include "touch.h"
 #include "board.h"
 #include "ioport.h"
@@ -21,7 +22,7 @@ void touch_init() {
 	uint8_t i;
 	for(i=0; i<10; ++i) {
 		memset(tname[i],0,100);
-		memset(tfunction[i],0,sizeof(tfunction[i]));	
+		memset(tfunction,0,sizeof(tfunction));	
 	}
 }
 /**
@@ -41,14 +42,14 @@ void get_point(rtouch_point_t *p_raw, rtouch_point_t *p_point) {
 	p_point->y = (p_point->y > g_ul_height) ? g_ul_height : p_point->y;
 }
 **/
-struct touch* find_touch(void) {
-	uint32_t x, y, val, X, Y;
+void find_touch(void) {
+	uint32_t x, y, val;
 	
 	rtouch_wait_pressed();
 	rtouch_get_raw_point(&x, &y);
 	rtouch_wait_released();
 	
-	rtouch_point_t raw, actual;
+	rtouch_point_t raw;
 	raw.x = x;
 	raw.y = y;
 	
@@ -56,5 +57,4 @@ struct touch* find_touch(void) {
 	val = 9-(raw.y-150)/180;
 	 T.tfunction = tfunction[val];
 	 strcpy(T.tname ,tname[val]);
-	 return &T;
 }

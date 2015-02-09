@@ -7,7 +7,9 @@
 
 #include "stdint-gcc.h"
 #include "display.h"
+#include "touch.h"
 #include <ili93xx.h>
+#include <string.h>
 
 void clear_screen(void) {
 	ili93xx_set_foreground_color(COLOR_WHITE);
