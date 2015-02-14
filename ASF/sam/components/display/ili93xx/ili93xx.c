@@ -1841,9 +1841,23 @@ void ili93xx_duplicate_pixel(const ili93xx_color_t color, uint32_t count)
  */
 void ili93xx_copy_pixels_from_screen(ili93xx_color_t *pixels, uint32_t count)
 {
-	/** Remove warnings */
-	UNUSED(pixels);
-	UNUSED(count);
+	
+	/** Sanity check to make sure that the pixel count is not zero */
+	Assert(count > 0);
+
+	if (g_uc_device_type == DEVICE_TYPE_ILI9325) {
+		LCD_IR(0);
+		LCD_IR(ILI9325_GRAM_DATA_REG);
+		} else if (g_uc_device_type == DEVICE_TYPE_ILI9341) {
+		LCD_IR(ILI9341_CMD_MEMORY_WRITE);
+		LCD_IR(0);
+		LCD_IR(ILI9341_CMD_WRITE_MEMORY_CONTINUE);
+	}
+
+	while (count--) {
+		*pixels = ili93xx_read_gram();
+		pixels++;
+	}
 }
 
 /**

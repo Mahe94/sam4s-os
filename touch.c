@@ -24,6 +24,7 @@ void touch_init() {
 		memset(tname[i],0,100);
 		memset(tfunction,0,sizeof(tfunction));	
 	}
+	touch_X = touch_Y = 0;
 }
 /**
 void get_point(rtouch_point_t *p_raw, rtouch_point_t *p_point) {
@@ -57,4 +58,14 @@ void find_touch(void) {
 	val = 9-(raw.y-150)/180;
 	 T.tfunction = tfunction[val];
 	 strcpy(T.tname ,tname[val]);
+}
+
+void get_touch(void) {
+	uint32_t x, y;
+	
+	rtouch_wait_pressed();
+	rtouch_get_raw_point(&x, &y);
+	
+	touch_X = (uint32_t)((120 - x) + 1780)/((float)1780/(float)240);
+	touch_Y = (uint32_t)((200 - y) + 1740)/((float)1740/(float)320);	
 }

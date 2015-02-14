@@ -21,6 +21,6 @@ uint32_t current_y;
 void clear_screen(void);
 void next_arrow(void);
 uint8_t check_space(void);
-uint8_t add_list(char *p, uint8_t priority, uint8_t fn);
+uint8_t add_list(const char *p, uint8_t priority, uint8_t fn);
 
 #endif /* DISPLAY_H_ */

@@ -155,13 +155,12 @@ static void configure_console(void)
 
 int main(void)
 {
-	uint8_t uc_result;
 	
-	char test_file_name[] = "0:sd_mmc_test.txt";
+
 	Ctrl_status status;
 //	FRESULT res;
 	FATFS fs;
-	FIL file_object;
+
 /**
 	const usart_serial_options_t usart_serial_options = {
 		.baudrate   = CONF_TEST_BAUDRATE,
@@ -265,14 +264,14 @@ int main(void)
 
 	status = sd_mmc_test_unit_ready(0);
 	if (CTRL_FAIL == status) {
-		add_list((const uint8_t *) "PLEASE INSERT SD CARD", 0, 0);
+		add_list("PLEASE INSERT SD CARD", 0, 0);
 		goto main_end_of_test;
 	}
 	
 	memset(&fs, 0, sizeof(FATFS));
 	res = f_mount(LUN_ID_SD_MMC_0_MEM, &fs);
 	if (FR_INVALID_DRIVE == res) {
-		add_list((const uint8_t *) "SD CARD CORRUPTED", 0, 0);
+		add_list("SD CARD CORRUPTED", 0, 0);
 		goto main_end_of_test;
 	}
 	
@@ -286,7 +285,8 @@ int main(void)
 		add_list("MY-OS", 4, 0);
 		add_list("FILE EXPLORER", 0, 1);
 		add_list("GALLERY", 0, 2);
-		add_list("MUSIC", 0, 3);	
+		add_list("MUSIC", 0, 3);
+		add_list("PAINT", 0,4);	
 
 		find_touch();
 		switch(T.tfunction) {
@@ -337,6 +337,21 @@ int main(void)
 					if(!T.tfunction)
 						goto main_screen;
 					break;
+					
+				case 3:
+						break;
+						
+				case 4:
+						clear_screen();
+						ili93xx_set_foreground_color(COLOR_BLACK);
+						while(1) {
+							get_touch();
+							if(touch_X > 235 && touch_Y > 315)
+								break;
+							ili93xx_draw_filled_circle(touch_X, touch_Y, 2);
+						}
+						goto main_screen;
+						break;
 				default:
 					break;
 		}	

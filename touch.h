@@ -19,10 +19,11 @@ struct touch {
 char tname[10][100];
 uint8_t tfunction[10];
 uint8_t position;
+uint32_t touch_X, touch_Y;
 
 void touch_init(void);
 void find_touch(void);
-
+void get_touch(void);
 
 
 #endif /* TOUCH_H_ */

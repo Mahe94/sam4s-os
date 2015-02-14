@@ -31,7 +31,7 @@ void next_arrow() {
 }
 
 /** adds a list in the screen with the priority, and the name is stored in tname and its function in tfunction.**/
-uint8_t add_list(char *p, uint8_t priority, uint8_t fn) {
+uint8_t add_list(const char *p, uint8_t priority, uint8_t fn) {
 	if(!check_space())
 		return 0;
 	ili93xx_set_foreground_color(LIST_COLOR);

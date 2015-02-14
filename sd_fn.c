@@ -20,7 +20,7 @@ void show_files(const TCHAR *path, const TCHAR *ext) {
 	TCHAR *fname, *l_fname;
 	memset(&f,0,sizeof(f));
 	
-	uint8_t position = 0, attrib = 1;
+	uint8_t attrib = 1;
 	
 	while((res = f_readdir(&dj, &f)) == FR_OK) {
 		if(f.fattrib==AM_DIR)
